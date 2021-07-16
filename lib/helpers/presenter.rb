@@ -2,17 +2,17 @@ module Helpers
   module Presenter
     def print_welcome_message
       puts [
-        "#########################################",
+        "\n#########################################",
         "#      Welcome to Trivia Generator      #",
-        "#########################################"
+        "#########################################\n\n"
       ]
     end
 
     def print_goodbye_message
       puts [
-        "#########################################",
+        "\n#########################################",
         "#   Thanks for using Trivia Generator   #",
-        "#########################################"
+        "#########################################\n\n"
       ]
     end
 
@@ -29,6 +29,14 @@ module Helpers
       end
 
       result
+    end
+
+    def print_table(score_list)
+      table = Terminal::Table.new
+      table.title = "Top Scores"
+      table.headings = %w[Name Score]
+      table.rows = score_list.map { |item| [item[:name], item[:score]] } unless score_list.empty?
+      puts table
     end
   end
 end

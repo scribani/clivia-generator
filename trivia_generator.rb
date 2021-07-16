@@ -1,4 +1,5 @@
 require "htmlentities"
+require "terminal-table"
 require_relative "./lib/helpers/presenter"
 require_relative "./lib/helpers/requester"
 require_relative "./lib/services/trivia"
@@ -25,9 +26,10 @@ class TriviaGenerator
       when "random"
         @score = 0
         random_trivia
-      when "scores" then puts "high scores table"
+      when "scores"
+        print_table(@store.sort_scores)
       end
-      puts "--------------------------------------------------"
+      puts "\n--------------------------------------------------"
       print_welcome_message
       action = select_main_menu
     end
@@ -39,7 +41,7 @@ class TriviaGenerator
     questions = Services::Trivia.random[:results]
     start_trivia(questions)
 
-    puts "Well done! Your score is #{@score}"
+    puts "\nWell done! Your score is #{@score}"
     player_name = save_confirmation
     return unless player_name
 

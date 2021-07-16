@@ -6,7 +6,7 @@ module Helpers
     end
 
     def ask_question(question, options)
-      puts "Category: #{question[:category]} | Difficulty: #{question[:difficulty]}"
+      puts "\nCategory: #{question[:category]} | Difficulty: #{question[:difficulty]}"
       puts "Question: #{@decoder.decode(question[:question])}"
       options.each { |option| puts @decoder.decode(option) }
       print "> "
@@ -14,7 +14,7 @@ module Helpers
     end
 
     def save_confirmation
-      puts "--------------------------------------------------"
+      puts "\n--------------------------------------------------\n\n"
       input = gets_with_options("Do you want to save your score? [y/n]", %w[y Y n N])
       return nil if input.downcase == "n"
 
