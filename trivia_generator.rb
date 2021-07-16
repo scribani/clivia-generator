@@ -8,13 +8,16 @@ class TriviaGenerator
 
   def initialize
     @decoder = HTMLEntities.new
+    @score = 0
   end
 
   def start
     action = select_main_menu
     until action == "exit"
       case action
-      when "random" then random_trivia
+      when "random"
+        @score = 0
+        random_trivia
       when "scores" then puts "high scores table"
       end
       action = select_main_menu
@@ -23,15 +26,17 @@ class TriviaGenerator
 
   def random_trivia
     questions = Services::Trivia.random[:results]
-    p questions
-    # questions are loaded, then let's ask them
-  end
+    questions.each do |question|
+      possible_answers = question[:incorrect_answers] << question[:correct_answer]
+      shuffled = possible_answers.shuffle
+      options = []
 
-  def ask_questions
-    # ask each question
-    # if response is correct, put a correct message and increase score
-    # if response is incorrect, put an incorrect message, and which was the correct answer
-    # once the questions end, show user's score and promp to save it
+      shuffled.each_with_index do |option, idx|
+        options << "#{idx + 1}. #{option}"
+      end
+
+      ask_question(question, options)
+    end
   end
 
   def save(data)
