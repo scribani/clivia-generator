@@ -1,18 +1,20 @@
+require "htmlentities"
 require_relative "./lib/helpers/presenter"
 require_relative "./lib/helpers/requester"
+require_relative "./lib/services/trivia"
 
 class TriviaGenerator
   include Helpers::Requester
 
   def initialize
-    # we need to initialize a couple of properties here
+    @decoder = HTMLEntities.new
   end
 
   def start
     action = select_main_menu
     until action == "exit"
       case action
-      when "random" then puts "random trivia"
+      when "random" then random_trivia
       when "scores" then puts "high scores table"
       end
       action = select_main_menu
@@ -20,7 +22,8 @@ class TriviaGenerator
   end
 
   def random_trivia
-    # load the questions from the api
+    questions = Services::Trivia.random[:results]
+    p questions
     # questions are loaded, then let's ask them
   end
 
