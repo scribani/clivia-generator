@@ -27,6 +27,7 @@ class TriviaGenerator
 
   def random_trivia
     questions = Services::Trivia.random[:results]
+
     questions.each do |question|
       possible_answers = question[:incorrect_answers] << question[:correct_answer]
       shuffled = possible_answers.shuffle
@@ -37,8 +38,11 @@ class TriviaGenerator
       end
 
       input = ask_question(question, options)
-      print_result(question[:correct_answer], input, options)
+      result = print_result(question[:correct_answer], input, options)
+      @score += 10 if result
     end
+
+    puts "Well done! Your score is #{@score}"
   end
 
   def save(data)
