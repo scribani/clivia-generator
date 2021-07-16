@@ -1,7 +1,7 @@
 module Helpers
   module Requester
     def select_main_menu
-      options = %w[random scores exit]
+      options = %w[random custom scores exit]
       gets_with_options(options.join(" | "), options)
     end
 
@@ -21,6 +21,15 @@ module Helpers
       puts "Type the name to assign to the score"
       print "> "
       gets.chomp.strip
+    end
+
+    def custom_trivia
+      category_label = "Select a category id (between 9 and 32)"
+      difficulty_label = "Select a difficulty (easy, medium or hard)"
+      category_options = Array.new(24) { |i| (i + 9).to_s }
+      category = gets_with_options(category_label, category_options)
+      difficulty = gets_with_options(difficulty_label, %w[easy medium hard])
+      { category: category, difficulty: difficulty }
     end
 
     def gets_with_options(label, options)
