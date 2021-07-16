@@ -1,18 +1,24 @@
+require "htmlentities"
 require_relative "./lib/helpers/presenter"
 require_relative "./lib/helpers/requester"
+require_relative "./lib/services/trivia"
 
 class TriviaGenerator
   include Helpers::Requester
+  include Helpers::Presenter
 
   def initialize
-    # we need to initialize a couple of properties here
+    @decoder = HTMLEntities.new
+    @score = 0
   end
 
   def start
     action = select_main_menu
     until action == "exit"
       case action
-      when "random" then puts "random trivia"
+      when "random"
+        @score = 0
+        random_trivia
       when "scores" then puts "high scores table"
       end
       action = select_main_menu
@@ -20,15 +26,23 @@ class TriviaGenerator
   end
 
   def random_trivia
-    # load the questions from the api
-    # questions are loaded, then let's ask them
-  end
+    questions = Services::Trivia.random[:results]
 
-  def ask_questions
-    # ask each question
-    # if response is correct, put a correct message and increase score
-    # if response is incorrect, put an incorrect message, and which was the correct answer
-    # once the questions end, show user's score and promp to save it
+    questions.each do |question|
+      possible_answers = question[:incorrect_answers] << question[:correct_answer]
+      shuffled = possible_answers.shuffle
+      options = []
+
+      shuffled.each_with_index do |option, idx|
+        options << "#{idx + 1}. #{option}"
+      end
+
+      input = ask_question(question, options)
+      result = print_result(question[:correct_answer], input, options)
+      @score += 10 if result
+    end
+
+    puts "Well done! Your score is #{@score}"
   end
 
   def save(data)

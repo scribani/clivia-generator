@@ -14,5 +14,13 @@ module Helpers
 
       input
     end
+
+    def ask_question(question, options)
+      puts "Category: #{question[:category]} | Difficulty: #{question[:difficulty]}"
+      puts "Question: #{@decoder.decode(question[:question])}"
+      options.each { |option| puts @decoder.decode(option) }
+      print "> "
+      gets.chomp
+    end
   end
 end
