@@ -2,18 +2,24 @@ require "htmlentities"
 require_relative "./lib/helpers/presenter"
 require_relative "./lib/helpers/requester"
 require_relative "./lib/services/trivia"
+require_relative "./lib/services/store"
 
 class TriviaGenerator
   include Helpers::Requester
   include Helpers::Presenter
 
   def initialize
+    @filename = ARGV.empty? ? "scores.json" : ARGV.shift
+    @store = Services::Store.new(@filename)
     @decoder = HTMLEntities.new
     @score = 0
+    @score_data = nil
   end
 
   def start
+    print_welcome_message
     action = select_main_menu
+
     until action == "exit"
       case action
       when "random"
@@ -21,13 +27,27 @@ class TriviaGenerator
         random_trivia
       when "scores" then puts "high scores table"
       end
+      puts "--------------------------------------------------"
+      print_welcome_message
       action = select_main_menu
     end
+
+    print_goodbye_message
   end
 
   def random_trivia
     questions = Services::Trivia.random[:results]
+    start_trivia(questions)
 
+    puts "Well done! Your score is #{@score}"
+    player_name = save_confirmation
+    return unless player_name
+
+    @score_data = { score: @score, name: player_name }
+    @store.update_scores_table(@score_data)
+  end
+
+  def start_trivia(questions)
     questions.each do |question|
       possible_answers = question[:incorrect_answers] << question[:correct_answer]
       shuffled = possible_answers.shuffle
@@ -41,8 +61,6 @@ class TriviaGenerator
       result = print_result(question[:correct_answer], input, options)
       @score += 10 if result
     end
-
-    puts "Well done! Your score is #{@score}"
   end
 
   def save(data)
@@ -53,21 +71,10 @@ class TriviaGenerator
     # get the scores data from file
   end
 
-  def load_questions
-    # ask the api for a random set of questions
-    parse_questions
-  end
-
-  def parse_questions
-    # questions came with an unexpected structure, clean them to make it usable for our purposes
-  end
-
   def print_scores
     # print the scores sorted from top to bottom
   end
 end
 
-Helpers::Presenter.print_welcome_message
 trivia = TriviaGenerator.new
 trivia.start
-Helpers::Presenter.print_goodbye_message

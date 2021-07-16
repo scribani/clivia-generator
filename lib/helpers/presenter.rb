@@ -1,6 +1,6 @@
 module Helpers
   module Presenter
-    def self.print_welcome_message
+    def print_welcome_message
       puts [
         "#########################################",
         "#      Welcome to Trivia Generator      #",
@@ -8,7 +8,7 @@ module Helpers
       ]
     end
 
-    def self.print_goodbye_message
+    def print_goodbye_message
       puts [
         "#########################################",
         "#   Thanks for using Trivia Generator   #",
