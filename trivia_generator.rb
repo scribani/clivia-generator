@@ -5,6 +5,7 @@ require_relative "./lib/services/trivia"
 
 class TriviaGenerator
   include Helpers::Requester
+  include Helpers::Presenter
 
   def initialize
     @decoder = HTMLEntities.new
@@ -35,7 +36,8 @@ class TriviaGenerator
         options << "#{idx + 1}. #{option}"
       end
 
-      ask_question(question, options)
+      input = ask_question(question, options)
+      print_result(question[:correct_answer], input, options)
     end
   end
 
