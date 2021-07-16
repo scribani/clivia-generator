@@ -1,17 +1,22 @@
-# do not forget to require your gem dependencies
-# do not forget to require_relative your local dependencies
+require_relative "./lib/helpers/presenter"
+require_relative "./lib/helpers/requester"
 
 class TriviaGenerator
-  # maybe we need to include a couple of modules?
+  include Helpers::Requester
 
   def initialize
     # we need to initialize a couple of properties here
   end
 
   def start
-    # welcome message
-    # prompt the user for an action
-    # keep going until the user types exit
+    action = select_main_menu
+    until action == "exit"
+      case action
+      when "random" then puts "random trivia"
+      when "scores" then puts "high scores table"
+      end
+      action = select_main_menu
+    end
   end
 
   def random_trivia
@@ -48,5 +53,7 @@ class TriviaGenerator
   end
 end
 
+Helpers::Presenter.print_welcome_message
 trivia = TriviaGenerator.new
 trivia.start
+Helpers::Presenter.print_goodbye_message
