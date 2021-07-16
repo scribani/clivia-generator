@@ -50,3 +50,4 @@ end
 Helpers::Presenter.print_welcome_message
 trivia = TriviaGenerator.new
 trivia.start
+Helpers::Presenter.print_goodbye_message
