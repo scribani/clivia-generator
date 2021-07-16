@@ -29,7 +29,7 @@ class TriviaGenerator
       when "scores"
         print_table(@store.sort_scores)
       end
-      puts "--------------------------------------------------"
+      puts "\n--------------------------------------------------"
       print_welcome_message
       action = select_main_menu
     end
@@ -41,7 +41,7 @@ class TriviaGenerator
     questions = Services::Trivia.random[:results]
     start_trivia(questions)
 
-    puts "Well done! Your score is #{@score}"
+    puts "\nWell done! Your score is #{@score}"
     player_name = save_confirmation
     return unless player_name
 
