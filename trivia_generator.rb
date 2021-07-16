@@ -1,4 +1,5 @@
 require "htmlentities"
+require "terminal-table"
 require_relative "./lib/helpers/presenter"
 require_relative "./lib/helpers/requester"
 require_relative "./lib/services/trivia"
@@ -25,7 +26,8 @@ class TriviaGenerator
       when "random"
         @score = 0
         random_trivia
-      when "scores" then puts "high scores table"
+      when "scores"
+        print_table(@store.sort_scores)
       end
       puts "--------------------------------------------------"
       print_welcome_message

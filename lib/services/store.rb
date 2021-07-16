@@ -8,7 +8,10 @@ module Services
     end
 
     def load_scores
-      JSON.parse(File.read(@filename), { symbolize_names: true })
+      file_content = File.read(@filename)
+      return [] if file_content.empty?
+
+      JSON.parse(file_content, { symbolize_names: true })
     rescue Errno::ENOENT
       File.write(@filename, "")
       []
@@ -17,6 +20,13 @@ module Services
     def update_scores_table(data)
       @scores_table << data
       persist_json
+    end
+
+    def sort_scores
+      return [] if @scores_table.empty?
+
+      @scores_table = load_scores
+      @scores_table.sort { |player_one, player_two| player_two[:score] <=> player_one[:score] }
     end
 
     def persist_json

@@ -30,5 +30,13 @@ module Helpers
 
       result
     end
+
+    def print_table(score_list)
+      table = Terminal::Table.new
+      table.title = "Top Scores"
+      table.headings = %w[Name Score]
+      table.rows = score_list.map { |item| [item[:name], item[:score]] } unless score_list.empty?
+      puts table
+    end
   end
 end
