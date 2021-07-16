@@ -25,7 +25,13 @@ class TriviaGenerator
       case action
       when "random"
         @score = 0
-        random_trivia
+        questions = Services::Trivia.random[:results]
+        start_trivia(questions)
+      when "custom"
+        @score = 0
+        custom_inputs = custom_trivia
+        questions = Services::Trivia.custom(custom_inputs)[:results]
+        start_trivia(questions)
       when "scores"
         print_table(@store.sort_scores)
       end
@@ -37,9 +43,17 @@ class TriviaGenerator
     print_goodbye_message
   end
 
-  def random_trivia
-    questions = Services::Trivia.random[:results]
-    start_trivia(questions)
+  def start_trivia(questions)
+    questions.each do |question|
+      possible_answers = question[:incorrect_answers] << question[:correct_answer]
+      options = []
+      possible_answers.shuffle.each_with_index do |option, idx|
+        options << "#{idx + 1}. #{option}"
+      end
+      input = ask_question(question, options)
+      result = print_result(question[:correct_answer], input, options)
+      @score += 10 if result
+    end
 
     puts "\nWell done! Your score is #{@score}"
     player_name = save_confirmation
@@ -47,34 +61,6 @@ class TriviaGenerator
 
     @score_data = { score: @score, name: player_name }
     @store.update_scores_table(@score_data)
-  end
-
-  def start_trivia(questions)
-    questions.each do |question|
-      possible_answers = question[:incorrect_answers] << question[:correct_answer]
-      shuffled = possible_answers.shuffle
-      options = []
-
-      shuffled.each_with_index do |option, idx|
-        options << "#{idx + 1}. #{option}"
-      end
-
-      input = ask_question(question, options)
-      result = print_result(question[:correct_answer], input, options)
-      @score += 10 if result
-    end
-  end
-
-  def save(data)
-    # write to file the scores data
-  end
-
-  def parse_scores
-    # get the scores data from file
-  end
-
-  def print_scores
-    # print the scores sorted from top to bottom
   end
 end
 
