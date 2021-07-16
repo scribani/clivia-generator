@@ -1,5 +1,4 @@
-# do not forget to require your gem dependencies
-# do not forget to require_relative your local dependencies
+require_relative "./lib/helpers/presenter"
 
 class TriviaGenerator
   # maybe we need to include a couple of modules?
@@ -48,5 +47,6 @@ class TriviaGenerator
   end
 end
 
+Helpers::Presenter.print_welcome_message
 trivia = TriviaGenerator.new
 trivia.start
