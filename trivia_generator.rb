@@ -55,7 +55,8 @@ class TriviaGenerator
       @score += 10 if result
     end
 
-    puts "\nWell done! Your score is #{@score}"
+    puts "\nWell done! Your score is #{@score}" if @score.positive?
+    puts "\nNo problem, you can try again. Your score is 0" if @score.zero?
     player_name = save_confirmation
     return unless player_name
 
