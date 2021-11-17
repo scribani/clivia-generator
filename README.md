@@ -1,77 +1,14 @@
 # CLIvia generator
 
-## Before starting!
+CLI app that generates a trivia game where you are asked questions from different categories and have to select the correct answer from multiple options.
 
-1. Create a new folder with the project name and open it from VS Code
+## Features
 
-## If on Linux/MacOS
+- Random option loads 10 questions from any category
+- Custom option allows you to select your preferred category and difficulty level
+- Score option list the names of the players with the top scores
+- Each question is shown with it's category name and difficulty level
+- Receive instant feedback on your answer
+- Save your final score to a JSON file
 
-2. From the VS Code terminal run the next docker command
-
-```powershell
-docker container run \
---name ruby \
--it \
--v $(pwd):/app \
--v ssh:/root/.ssh \
--v bundle:/usr/local/bundle \
--e GIT_USER_NAME=<your_username> \
--e GIT_USER_EMAIL=<your_email> \
---rm \
-codeableorg/ruby
-```
-
-## If on Windows
-
-2. From the VS Code terminal, select Powershell terminal, then run the next docker command
-
-```powershell
-docker container run \
---name ruby \
--it \
--v ${PWD}:/app \
--v ssh:/root/.ssh \
--v bundle:/usr/local/bundle \
--e GIT_USER_NAME=<your_username> \
--e GIT_USER_EMAIL=<your_email> \
---rm \
-codeableorg/ruby
-```
-
-## Then
-
-3. Clone the repository of your work team
-
-```powershell
-$ git clone git@github.com:codeableorg/clivia-generator-xxx.git .
-```
-
-4.  Run some initialization scripts
-
-```powershell
-$ bootstrap
-```
-
-5.  Install some necessary gems for rubocop to work properly
-
-```powershell
-$ bundle install
-```
-
-ready, you can work on your project!
-
-Looking for the project instructions? Find them on [this notion doc](https://ableco.notion.site/Individual-CLIvia-generator-87e1fd914fe44580aab29f14abae1a04)
-
-To disable temporarily any Rubocop convention:
-
-```
-# rubocop:disable Metrics/AbcSize
-def complex_and_irreducible_method(that, receive, a, lot, of, params)
-  ...
-  ...
-  ...
-end
-# rubocop:enable Metrics/AbcSize
-```
-
-To disable them, use the convention that Rubocop is complaining about. _Metrics/AbcSize_ is just an example.
+## Built with ♥️ using Ruby
